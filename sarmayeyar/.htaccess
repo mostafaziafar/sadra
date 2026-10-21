@@ -1,0 +1,28 @@
+# ─── سرمایه‌یار — پیکربندی Apache ─────────────────────────────────────────────
+# این فایل در ریشهٔ برنامه است و هم برای نصب در ریشهٔ دامنه و هم در زیرپوشه کار می‌کند
+# (بدون نیاز به تغییر RewriteBase).
+
+DirectoryIndex index.php index.html
+Options -Indexes
+
+# محافظت از پوشه‌های حساس (در ریشه و زیرپوشه)
+RedirectMatch 403 /(\.git|data|inc|tools)(/|$)
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # فایل‌ها و پوشه‌های واقعی (مثل install.php و demo.html) مستقیم سرو/اجرا شوند
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # هر درخواست دیگری → index.php  (خودش هم API را مسیردهی می‌کند و هم فایل‌های
+  # رابط کاربری داخل پوشهٔ public/ را سرو می‌کند؛ پس نیازی به RewriteBase نیست)
+  RewriteRule ^ index.php [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "no-referrer"
+</IfModule>

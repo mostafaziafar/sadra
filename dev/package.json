@@ -1,0 +1,13 @@
+{
+  "name": "sadra-dev-preview",
+  "private": true,
+  "type": "module",
+  "description": "Local preview server for the sarmayeyar PHP app (php-wasm based)",
+  "scripts": {
+    "start": "node preview-server.mjs"
+  },
+  "dependencies": {
+    "@php-wasm/node": "3.1.60",
+    "@php-wasm/universal": "3.1.60"
+  }
+}
